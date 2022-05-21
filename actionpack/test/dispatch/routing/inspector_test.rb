@@ -266,21 +266,21 @@ module ActionDispatch
 
       def test_rails_routes_dont_show_app_mounted_in_assets_prefix
         output = draw do
-          get "/sprockets" => MountedRackApp
+          get "/mounted_app" => MountedRackApp
         end
         assert_no_match(/MountedRackApp/, output.first)
-        assert_no_match(/\/sprockets/, output.first)
+        assert_no_match(/\/mounted_app/, output.first)
       end
 
       def test_rails_routes_shows_route_defined_in_under_assets_prefix
         output = draw do
-          scope "/sprockets" do
+          scope "/assets" do
             get "/foo" => "foo#bar"
           end
         end
         assert_equal [
           "Prefix Verb URI Pattern              Controller#Action",
-          "   foo GET  /sprockets/foo(.:format) foo#bar"
+          "   foo GET  /assets/foo(.:format) foo#bar"
         ], output
       end
 

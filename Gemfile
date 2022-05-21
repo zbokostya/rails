@@ -11,7 +11,6 @@ gem "minitest", ">= 5.15.0"
 # We need a newish Rake since Active Job sets its test tasks' descriptions.
 gem "rake", ">= 11.1"
 
-gem "sprockets-rails", ">= 2.0.0"
 gem "propshaft", ">= 0.1.7"
 gem "capybara", ">= 3.26"
 gem "selenium-webdriver", ">= 4.0.0"
@@ -104,12 +103,6 @@ gem "webmock"
 
 group :ujs do
   gem "webdrivers"
-end
-
-# Action View
-group :view do
-  gem "blade", require: false, platforms: [:ruby]
-  gem "sprockets-export", require: false
 end
 
 # Add your own local bundler stuff.

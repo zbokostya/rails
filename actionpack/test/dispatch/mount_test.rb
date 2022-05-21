@@ -22,26 +22,26 @@ class TestRoutingMount < ActionDispatch::IntegrationTest
   end
 
   Router.draw do
-    SprocketsApp = lambda { |env|
+    RackApp = lambda { |env|
       [200, { "Content-Type" => "text/html" }, ["#{env["SCRIPT_NAME"]} -- #{env["PATH_INFO"]}"]]
     }
 
-    mount SprocketsApp, at: "/sprockets"
-    mount SprocketsApp, at: "/star*"
-    mount SprocketsApp => "/shorthand"
+    mount RackApp, at: "/rack_app"
+    mount RackApp, at: "/star*"
+    mount RackApp => "/shorthand"
 
     mount SinatraLikeApp, at: "/fakeengine", as: :fake
     mount SinatraLikeApp, at: "/getfake", via: :get
 
     scope "/its_a" do
-      mount SprocketsApp, at: "/sprocket"
+      mount RackApp, at: "/sprocket"
     end
 
     resources :users do
       mount AppWithRoutes, at: "/fakeengine", as: :fake_mounted_at_resource
     end
 
-    mount SprocketsApp, at: "/", via: :get
+    mount RackApp, at: "/", via: :get
   end
 
   APP = RoutedRackApp.new Router
@@ -70,13 +70,13 @@ class TestRoutingMount < ActionDispatch::IntegrationTest
   end
 
   def test_mounting_sets_script_name
-    get "/sprockets/omg"
-    assert_equal "/sprockets -- /omg", response.body
+    get "/rack_app/omg"
+    assert_equal "/rack_app -- /omg", response.body
   end
 
   def test_mounting_works_with_nested_script_name
-    get "/foo/sprockets/omg", headers: { "SCRIPT_NAME" => "/foo", "PATH_INFO" => "/sprockets/omg" }
-    assert_equal "/foo/sprockets -- /omg", response.body
+    get "/foo/rack_app/omg", headers: { "SCRIPT_NAME" => "/foo", "PATH_INFO" => "/rack_app/omg" }
+    assert_equal "/foo/rack_app -- /omg", response.body
   end
 
   def test_mounting_works_with_scope

@@ -6,7 +6,7 @@ require "controller/fake_controllers"
 require "active_support/messages/rotation_configuration"
 
 class TestRoutingMapper < ActionDispatch::IntegrationTest
-  SprocketsApp = lambda { |env|
+  AssetsApp = lambda { |env|
     [200, { "Content-Type" => "text/html" }, ["javascripts"]]
   }
 
@@ -1032,12 +1032,12 @@ class TestRoutingMapper < ActionDispatch::IntegrationTest
     assert_equal "/pt/projetos/1/fechar", close_pt_project_path(1)
   end
 
-  def test_sprockets
+  def test_assets
     draw do
-      get "sprockets.js" => ::TestRoutingMapper::SprocketsApp
+      get "assets.js" => ::TestRoutingMapper::AssetsApp
     end
 
-    get "/sprockets.js"
+    get "/assets.js"
     assert_equal "javascripts", @response.body
   end
 
