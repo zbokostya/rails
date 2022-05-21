@@ -279,7 +279,7 @@ module ActionDispatch
           end
         end
         assert_equal [
-          "Prefix Verb URI Pattern              Controller#Action",
+          "Prefix Verb URI Pattern           Controller#Action",
           "   foo GET  /assets/foo(.:format) foo#bar"
         ], output
       end
