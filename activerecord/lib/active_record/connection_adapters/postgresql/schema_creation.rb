@@ -12,8 +12,8 @@ module ActiveRecord
             sql << o.constraint_validations.map { |fk| visit_ValidateConstraint fk }.join(" ")
             sql << o.exclusion_constraint_adds.map { |con| visit_AddExclusionConstraint con }.join(" ")
             sql << o.exclusion_constraint_drops.map { |con| visit_DropExclusionConstraint con }.join(" ")
-            sql << o.unique_key_adds.map { |con| visit_AddUniqueKey con }.join(" ")
-            sql << o.unique_key_drops.map { |con| visit_DropUniqueKey con }.join(" ")
+            sql << o.unique_constraint_adds.map { |con| visit_AddUniqueKey con }.join(" ")
+            sql << o.unique_constraint_drops.map { |con| visit_DropUniqueKey con }.join(" ")
           end
 
           def visit_AddForeignKey(o)
