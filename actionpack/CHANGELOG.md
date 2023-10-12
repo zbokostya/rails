@@ -1,3 +1,7 @@
+*   Remove deprecated constant `AbstractController::Helpers::MissingHelperError`.
+
+    *Rafael Mendonça França*
+
 *   Remove deprecated constant `ActionDispatch::IllegalStateError`.
 
     *Rafael Mendonça França*
