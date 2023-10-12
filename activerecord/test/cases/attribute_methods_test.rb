@@ -1217,7 +1217,7 @@ class AttributeMethodsTest < ActiveRecord::TestCase
     assert_equal("foo", second_model_object.subject)
   end
 
-  test "#alias_attribute with an overridden original method does not use the overriden original method" do
+  test "#alias_attribute with an overridden original method does not use the overridden original method" do
     class_with_deprecated_alias_attribute_behavior = Class.new(ActiveRecord::Base) do
       self.table_name = "topics"
       alias_attribute :subject, :title
@@ -1233,7 +1233,7 @@ class AttributeMethodsTest < ActiveRecord::TestCase
     assert_nil(obj.subject_was)
   end
 
-  test "#alias_attribute with an overridden original method from a module does not use the overriden original method" do
+  test "#alias_attribute with an overridden original method from a module does not use the overridden original method" do
     title_was_override = Module.new do
       def title_was
         "overridden_title_was"
