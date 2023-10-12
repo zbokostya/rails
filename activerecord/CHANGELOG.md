@@ -1,3 +1,7 @@
+*   Remove deprecated `Rails.application.config.active_record.suppress_multiple_database_warning`.
+
+    *Rafael Mendonça França*
+
 *   Ensure `#signed_id` outputs `url_safe` strings.
 
     *Jason Meller*
