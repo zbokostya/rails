@@ -88,31 +88,15 @@ module ActiveRecord
         parameters = pattern.parameters
         old_name = old_name.to_s
 
-        method_defined = method_defined?(target_name) || private_method_defined?(target_name)
-        manually_defined = method_defined &&
-          !self.instance_method(target_name).owner.is_a?(GeneratedAttributeMethods)
-        reserved_method_name = ::ActiveRecord::AttributeMethods.dangerous_attribute_methods.include?(target_name)
-
         if !abstract_class? && !has_attribute?(old_name)
-          # We only need to issue this deprecation warning once, so we issue it when defining the original reader method.
-          should_warn = target_name == old_name
-          if should_warn
-            ActiveRecord.deprecator.warn(
-              "#{self} model aliases `#{old_name}`, but `#{old_name}` is not an attribute. " \
-              "Starting in Rails 7.2, alias_attribute with non-attribute targets will raise. " \
-              "Use `alias_method :#{new_name}, :#{old_name}` or define the method manually."
-            )
-          end
-          super
-        elsif manually_defined && !reserved_method_name
-          aliased_method_redefined_as_well = method_defined_within?(method_name, self)
-          return if aliased_method_redefined_as_well
+          # We only need to raise once, so we issue it when defining the original reader method.
+          is_reader_method = target_name == old_name
 
-          ActiveRecord.deprecator.warn(
-            "#{self} model aliases `#{old_name}` and has a method called `#{target_name}` defined. " \
-            "Starting in Rails 7.2 `#{method_name}` will not be calling `#{target_name}` anymore. " \
-            "You may want to additionally define `#{method_name}` to preserve the current behavior."
-          )
+          if is_reader_method
+            raise ArgumentError, "#{self.name} model aliases `#{old_name}`, but `#{old_name}` is not an attribute. " \
+              "Use `alias_method :#{new_name}, :#{old_name}` or define the method manually."
+          end
+
           super
         else
           define_proxy_call(code_generator, method_name, pattern.proxy_target, parameters, old_name,
