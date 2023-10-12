@@ -93,17 +93,6 @@ module ActiveJob
         when -> (arg) { arg.respond_to?(:permitted?) && arg.respond_to?(:to_h) }
           serialize_indifferent_hash(argument.to_h)
         else
-          if BigDecimal === argument && !ActiveJob.use_big_decimal_serializer
-            ActiveJob.deprecator.warn(<<~MSG)
-              Primitive serialization of BigDecimal job arguments is deprecated as it may serialize via .to_s using certain queue adapters.
-              Enable config.active_job.use_big_decimal_serializer to use BigDecimalSerializer instead, which will be mandatory in Rails 7.2.
-
-              Note that if you application has multiple replicas, you should only enable this setting after successfully deploying your app to Rails 7.1 first.
-              This will ensure that during your deployment all replicas are capable of deserializing arguments serialized with BigDecimalSerializer.
-            MSG
-            return argument
-          end
-
           Serializers.serialize(argument)
         end
       end
@@ -111,8 +100,6 @@ module ActiveJob
       def deserialize_argument(argument)
         case argument
         when *PERMITTED_TYPES
-          argument
-        when BigDecimal # BigDecimal may have been legacy serialized; Remove in 7.2
           argument
         when Array
           argument.map { |arg| deserialize_argument(arg) }
