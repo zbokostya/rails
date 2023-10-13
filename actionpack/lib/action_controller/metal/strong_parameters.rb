@@ -245,7 +245,7 @@ module ActionController
     class << self
       def allow_deprecated_parameters_hash_equality
         ActionController.deprecator.warn <<-WARNING.squish
-          `ActionController::Parametersy.allow_deprecated_parameters_hash_equality` is
+          `Rails.application.config.action_controller.allow_deprecated_parameters_hash_equality` is
           deprecated and will be removed in Rails 7.3.
         WARNING
       end
