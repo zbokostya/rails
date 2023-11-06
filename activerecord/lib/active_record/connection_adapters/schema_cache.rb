@@ -308,11 +308,6 @@ module ActiveRecord
         end
       end
 
-      def data_sources(_connection, name) # :nodoc:
-        @data_sources[name]
-      end
-      deprecate data_sources: :data_source_exists?, deprecator: ActiveRecord.deprecator
-
       # Get the columns for a table
       def columns(connection, table_name)
         if ignored_table?(table_name)
