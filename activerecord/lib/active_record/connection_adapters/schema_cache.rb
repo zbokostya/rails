@@ -47,7 +47,7 @@ module ActiveRecord
       end
 
       def data_sources(connection, name)
-        cache(connection).data_sources(connection, name)
+        cache(connection).data_source_exists?(connection, name)
       end
 
       def columns(connection, table_name)
