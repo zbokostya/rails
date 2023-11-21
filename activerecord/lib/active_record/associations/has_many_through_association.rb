@@ -156,7 +156,11 @@ module ActiveRecord
           end
 
           if through_reflection.collection? && update_through_counter?(method)
-            update_counter(-count, through_reflection)
+            if !method && through_reflection.inverse_of && through_reflection.inverse_of.has_cached_counter?
+              update_counter(-count, through_reflection.inverse_of)
+            else
+              update_counter(-count, through_reflection)
+            end
           else
             update_counter(-count)
           end
